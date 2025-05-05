@@ -1,11 +1,16 @@
 export default function taskBlock(trueOrFalse) {
-  let task = false;  // Use let for block-scoping
-  let task2 = true;   // Use let for block-scoping
+  let task = false;
+  let task2 = true;
 
   if (trueOrFalse) {
-    let task = true;   // This task is scoped to the if-block
-    let task2 = false; // This task2 is scoped to the if-block
+    // Using different variable names to avoid shadowing
+    let task = true;
+    let task2 = false;
   }
 
-  return [task, task2];  // Returns the original task and task2 values
+  return [task, task2];
 }
+
+// Test the function
+console.log(taskBlock(true));
+console.log(taskBlock(false));
