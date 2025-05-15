@@ -1,4 +1,4 @@
-export default class ALXCourse {
+export default class HbtnCourse {
   constructor(name, length, students) {
     if (typeof name !== 'string') {
       throw new TypeError('Name must be a string');
