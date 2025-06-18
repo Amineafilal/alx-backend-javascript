@@ -6,18 +6,20 @@ class StudentsController {
     const filePath = process.argv[2];
 
     readDatabase(filePath)
-      .then((fields) => {
+      .then((data) => {
         let response = 'This is the list of our students\n';
-        const sortedFields = Object.keys(fields).sort();
+        const fields = Object.keys(data).sort();
 
-        for (const field of sortedFields) {
-          const list = fields[field];
-          response += `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}\n`;
+        for (const field of fields) {
+          const students = data[field];
+          response += `Number of students in ${field}: ${students.length}. List: ${students.join(', ')}\n`;
         }
 
         res.status(200).send(response.trim());
       })
-      .catch(() => res.status(500).send('Cannot load the database'));
+      .catch(() => {
+        res.status(500).send('Cannot load the database');
+      });
   }
 
   static getAllStudentsByMajor(req, res) {
@@ -30,15 +32,13 @@ class StudentsController {
     }
 
     readDatabase(filePath)
-      .then((fields) => {
-        const list = fields[major];
-        if (list) {
-          res.status(200).send(`List: ${list.join(', ')}`);
-        } else {
-          res.status(200).send('List:');
-        }
+      .then((data) => {
+        const students = data[major];
+        res.status(200).send(`List: ${students.join(', ')}`);
       })
-      .catch(() => res.status(500).send('Cannot load the database'));
+      .catch(() => {
+        res.status(500).send('Cannot load the database');
+      });
   }
 }
 

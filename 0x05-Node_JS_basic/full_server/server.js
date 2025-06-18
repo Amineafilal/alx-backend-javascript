@@ -6,10 +6,8 @@ const app = express();
 
 app.use('/', router);
 
-// ✅ THIS IS ESSENTIAL
 app.listen(1245, () => {
   console.log('Server is listening on port 1245');
 });
 
 export default app;
-
