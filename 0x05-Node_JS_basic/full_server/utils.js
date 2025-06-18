@@ -1,25 +1,26 @@
-// full_server/utils.js
-import fs from 'fs';
+const { readFile } = require('fs');
 
-export function readDatabase(filePath) {
+module.exports = function readDatabase(filePath) {
+  const students = {};
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
+    readFile(filePath, (err, data) => {
       if (err) {
-        reject(new Error('Cannot load the database'));
-        return;
+        reject(err);
+      } else {
+        const lines = data.toString().split('\n');
+        const noHeader = lines.slice(1);
+        for (let i = 0; i < noHeader.length; i += 1) {
+          if (noHeader[i]) {
+            const field = noHeader[i].toString().split(',');
+            if (Object.prototype.hasOwnProperty.call(students, field[3])) {
+              students[field[3]].push(field[0]);
+            } else {
+              students[field[3]] = [field[0]];
+            }
+          }
+        }
+        resolve(students);
       }
-
-      const lines = data.trim().split('\n').slice(1);
-      const result = {};
-
-      for (const line of lines) {
-        if (!line) continue;
-        const [firstname, , , field] = line.split(',');
-        if (!result[field]) result[field] = [];
-        result[field].push(firstname);
-      }
-
-      resolve(result);
     });
   });
-}
+};
